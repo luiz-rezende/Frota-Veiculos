@@ -1,0 +1,13 @@
+# Arquivos sensíveis
+includes/config.php
+
+# Arquivos do XAMPP
+xampp/
+data/
+*.sql
+*.db
+*.log
+
+# Sistema
+.DS_Store
+Thumbs.db
