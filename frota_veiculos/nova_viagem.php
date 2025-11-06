@@ -8,17 +8,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $id_veiculo = $_POST["id_veiculo"];
     $data_hora = $_POST["data_hora"];
     $destino = $_POST["destino"];
+    $quilometragem_inicial = $_POST["quilometragem_inicial"];
+    $quilometragem_final = $_POST["quilometragem_final"];
     $finalidade = $_POST["finalidade"];
     $colaborador_responsavel = $_POST["colaborador_responsavel"];
     $status = $_POST["status"];
 
-    if (empty($id_veiculo) || empty($data_hora) || empty($destino) || empty($finalidade) || empty($colaborador_responsavel) || empty($status)) {
+    if (empty($id_veiculo) || empty($data_hora) || empty($destino) || empty($quilometragem_inicial) || empty($quilometragem_final) || empty($finalidade) || empty($colaborador_responsavel) || empty($status)) {
         $error = "Todos os campos são obrigatórios.";
     } else {
         try {
-            $stmt = $pdo->prepare("INSERT INTO agendamento_viagens (id_veiculo, data_hora, destino, finalidade, colaborador_responsavel, status ) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$id_veiculo, $data_hora, $destino, $finalidade, $colaborador_responsavel, $status ]);
-            header("Location: ag_viagens.php");
+            $stmt = $pdo->prepare("INSERT INTO viagens (id_veiculo, data_hora, destino, quilometragem_inicial, quilometragem_final, finalidade, colaborador_responsavel, status ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$id_veiculo, $data_hora, $destino, $quilometragem_inicial, $quilometragem_final, $finalidade, $colaborador_responsavel, $status ]);
+            header("Location: viagens.php");
             exit();
         } catch (PDOException $e) {
             $error = "Erro ao inserir uma nova transação: " . $e->getMessage();
@@ -46,6 +48,14 @@ include 'includes/header.php';
         <input type="text" class="form-control" id="destino" name="destino" required>
     </div>
     <div class="form-group">
+        <label for="quilometragem_inicial">KM Inicial</label>
+        <input type="text" class="form-control" id="quilometragem_inicial" name="quilometragem_inicial" required>
+    </div>
+    <div class="form-group">
+        <label for="quilometragem_final">KM Final</label>
+        <input type="text" class="form-control" id="quilometragem_final" name="quilometragem_final" required>
+    </div>
+    <div class="form-group">
         <label for="finalidade">Finalidade</label>
         <input type="text" class="form-control" id="finalidade" name="finalidade" required>
     </div>
@@ -62,7 +72,7 @@ include 'includes/header.php';
     </select>
 </div>
 
-    <button type="submit" class="btn btn-success" style="margin-top:20px;">Adicionar</button>
+    <button type="submit" class="btn btn-success" style="margin-top:20px; margin-bottom: 70px;">Adicionar</button>
 </form>
 
 <?php include 'includes/footer.php'; ?>
